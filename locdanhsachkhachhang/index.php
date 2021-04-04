@@ -81,6 +81,7 @@ function searchByDate($customers, $from_date, $to_date)
       <th>Địa chỉ</th>
       <th>Ảnh</th>
     </tr>
+    
     <?php foreach ($filtered_customers as $index => $customer) : ?>
       <tr>
         <td><?php echo $index + 1; ?></td>
@@ -91,6 +92,7 @@ function searchByDate($customers, $from_date, $to_date)
           <div class="profile"><img src="<?php echo $customer['profile']; ?>" /></div>
         </td>
       </tr>
+
     <?php endforeach; ?>
   </table>
 </body>
