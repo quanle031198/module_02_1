@@ -1,46 +1,88 @@
-<!DOCTYPE html>
-<html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $invest = $_POST['invest'];
+    $rate = $_POST['rate'];
+    $year = $_POST['year'];
+    $submit = $_POST['submit'];
+    if (isset($submit)) {
+        $errors = [];
+        foreach ($_POST as $key => $value) {
+            if($key=='submit'){
+                continue;
+            };
+            if (!is_numeric($value)) {
+                $errors[] = "Please fill $key";
+            }
+        }
+    }
+}
+?>
+<!doctype html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Future Value Calculator</title>
     <style>
-        input[type=number] {
-            width: 300px;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            padding: 12px 10px 12px 10px;
+        #login {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        #submit {
-            border-radius: 2px;
-            padding: 10px 32px;
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            float: right;
+            width: 20%;
+            height: 20px;
             font-size: 16px;
+        }
+
+        input[type= submit] {
+            align-self: center;
         }
     </style>
 </head>
-
 <body>
-    <h2>[Bài tập] Ứng dụng Future Value Calculator</h2>
-    <form method="post">
-        <input type="number" name="amount" placeholder="Lượng tiền đầu tư ban đầu" />
-        <input type="number" name="interest" placeholder="Lãi suất năm" />
-        <input type="number" name="numofyear" placeholder="Số năm đầu tư" />
-        <input type="submit" id="submit" value="Tính" />
+<div id="login">
+    <h3>Future Value Calculator</h3>
+    <form action="index.php" method="post">
+        <div>
+            <label>Inventment Amount</label>
+            <input type="number" name="invest" value="<?= $invest ?>">
+        </div>
+        <div>
+            <label>Yearly Interest Rate</label>
+            <input type="number" name="rate" value="<?= $rate ?>">
+        </div>
+        <div>
+            <label>Number of Years</label>
+            <input type="number" name="year" value="<?= $year ?>">
+        </div>
+        <input type="submit" name="submit" value="Calculate">
     </form>
+    <p>
+        <?php
+            if (!empty($errors)) {
+                foreach ($errors as $value) {
+                    echo $value."</br>";
+                }
+            } else{
+                $result = ($invest + ($invest * $rate)) * $year;
+                if($result){
+                    echo "Your future value is ".$result;
+                }
+
+            }
+        ?>
+    </p>
+</div>
 </body>
-<?php
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $amount = $_POST["amount"];
-    $interest = $_POST["interest"];
-    $numofyear = $_POST["numofyear"];
-
-    $futureValues = $amount + ($amount * $interest);
-    echo "<p>" .$futureValues."</p>";
-    
-}
-?>
-
 </html>
